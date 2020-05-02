@@ -33,7 +33,7 @@ namespace HotelBookingWebApp
 
             foreach (Hotel hotel in hotels)
             {
-                if (hotel.Town.Equals(_town) && hotel.Rating.Equals(_numberOfStars))
+                if (hotel.Town.ToLower().Equals(_town.ToLower()) && hotel.Rating.Equals(_numberOfStars))
                 {
 
                     foreach (Room room in hotel.Rooms)

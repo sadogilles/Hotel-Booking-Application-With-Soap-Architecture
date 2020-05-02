@@ -5,7 +5,8 @@ using System.Windows.Forms;
 using System.Json;
 using System.Dynamic;
 using Newtonsoft.Json;
-
+using System.ServiceModel.Configuration;
+using System.Linq;
 
 namespace ClientConsoleApp
 {
@@ -72,6 +73,23 @@ namespace ClientConsoleApp
                 listHotelGrid["country", row].Value = h.Country.ToString();
                 //console.writeline("hotel rating!");
                 //console.writeline(h.Rating);
+
+                List<int> prices = new List<int>();
+
+                //compute price
+                foreach (HotelBookingServiceReference.Room r in h.Rooms)
+                {
+
+                    prices.Add(r.Price);
+
+                }
+
+                var minPrice = prices.Min();
+                var maxPrice = prices.Max();
+
+                String priceRange = minPrice.ToString() + "-" + maxPrice.ToString();
+
+                listHotelGrid["priceRange", row].Value = priceRange;
 
             }
 
@@ -167,10 +185,7 @@ namespace ClientConsoleApp
 
 
             } else {
-                //set the client objet
-                //client.ClientFirstName = clientFirstNameTextBox.Text;
-                //client.ClientLastName = clientLastNameTextBox.Text;
-                //client.ClientCardInfo = clientCardInformationTextBox.Text;
+                //do nothing
             }
 
 
@@ -263,7 +278,7 @@ namespace ClientConsoleApp
         private void submitButton_Click(object sender, EventArgs e)
         {
             notification.Visible = true;
-            listHotelGrid.Visible = true;
+            listHotelGrid.Visible = true; 
             tableHotelInformation.Visible = false;
             ClientInformationLayoutPanel.Visible = false;
             roomDataGridView.Visible = false;
@@ -290,7 +305,7 @@ namespace ClientConsoleApp
                 client.NumberOfStars = Int32.Parse(numberOfStarsTextBox.Text);
 
                 //for simplicity consider we consider only townName,min price , max price and number of stars
-                hotels = hotelService.searchhotel(client.HotelTown, client.MinPrice, client.MaxPrice, client.NumberOfStars);
+                hotels = hotelService.searchhotel(client.HotelTown.ToLower(), client.MinPrice, client.MaxPrice, client.NumberOfStars);
 
                 foreach (HotelBookingServiceReference.Hotel item in hotels) Console.WriteLine(item);
 
@@ -313,6 +328,24 @@ namespace ClientConsoleApp
                     listHotelGrid["town", row].Value = h.Town.ToString();
                     listHotelGrid["country", row].Value = h.Country.ToString();
                     listHotelGrid["chooseHotel", row].Value = submitButton;
+
+                    List<int> prices = new List<int>();
+
+                    //compute price
+                    foreach (HotelBookingServiceReference.Room r in h.Rooms) {
+
+                        prices.Add(r.Price);
+            
+                    }
+
+                    var minPrice = prices.Min();
+                    var maxPrice = prices.Max();
+
+                    String priceRange = minPrice.ToString() + "-" + maxPrice.ToString();
+
+                    listHotelGrid["priceRange",row].Value = priceRange;
+
+
                 }
             }
 
