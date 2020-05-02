@@ -40,7 +40,7 @@ namespace ClientConsoleApp
 
         }
 
-        //this correspond to find all hotel button event //C# doesnot want to rename it
+        //this corresponds to find all hotel button event //C# doesnot want to rename it
         private  void button1_Click(object sender, EventArgs e)
         {
             notification.Visible = true;
